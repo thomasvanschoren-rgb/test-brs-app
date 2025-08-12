@@ -17,7 +17,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y python3-pip git zip unzip openjdk-11-jdk python3-setuptools python3-venv wget
+          sudo apt install -y python3 python3-pip git zip unzip openjdk-11-jdk python3-setuptools python3-venv wget
 
       - name: Install Android SDK & Build Tools
         run: |
@@ -30,8 +30,8 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install --upgrade pip
-          pip install --user Cython buildozer
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --user Cython buildozer
         env:
           PATH: $HOME/.local/bin:$PATH
 
@@ -48,3 +48,4 @@ jobs:
         with:
           name: BRS-Launcher
           path: bin/*.apk
+
