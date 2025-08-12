@@ -57,6 +57,9 @@ jobs:
       - name: Clean previous build
         run: buildozer android clean
 
+      - name: Prepare Buildozer build environment
+        run: buildozer android update
+
       - name: Build APK
         run: buildozer android debug
 
