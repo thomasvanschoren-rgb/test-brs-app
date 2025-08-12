@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ANDROIDSDK: /home/runner/android-sdk
+      ANDROIDNDK: /home/runner/android-sdk/ndk/23.1.7779620
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -25,7 +29,7 @@ jobs:
           path: ~/android-sdk
           key: android-sdk-cache-v1
 
-      - name: Cache Buildozer files
+      - name: Cache Buildozer directory
         uses: actions/cache@v3
         with:
           path: .buildozer
@@ -50,16 +54,14 @@ jobs:
           python3 -m pip install --upgrade pip
           sudo python3 -m pip install Cython buildozer
 
-      - name: Build APK
-        env:
-          ANDROIDSDK: $HOME/android-sdk
-          ANDROIDNDK: $HOME/android-sdk/ndk/23.1.7779620
-        run: |
-          buildozer android debug
+      - name: Clean previous build
+        run: buildozer android clean
 
-      - name: Upload APK
+      - name: Build APK
+        run: buildozer android debug
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BRS-Launcher
+          name: BRS-Launcher-APK
           path: bin/*.apk
-
