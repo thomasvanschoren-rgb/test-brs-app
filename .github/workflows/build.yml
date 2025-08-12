@@ -31,13 +31,15 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install Cython buildozer
+          pip install --user Cython buildozer
+        env:
+          PATH: $HOME/.local/bin:$PATH
 
       - name: Build APK
         env:
+          PATH: $HOME/.local/bin:$PATH
           ANDROIDSDK: $HOME/android-sdk
           ANDROIDNDK: $HOME/android-sdk/ndk/23.1.7779620
-          PATH: $HOME/android-sdk/platform-tools:$PATH
         run: |
           buildozer android debug
 
