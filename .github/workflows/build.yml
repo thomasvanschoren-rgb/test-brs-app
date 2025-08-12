@@ -19,6 +19,18 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Cache Android SDK
+        uses: actions/cache@v3
+        with:
+          path: ~/android-sdk
+          key: android-sdk-cache-v1
+
+      - name: Cache Buildozer files
+        uses: actions/cache@v3
+        with:
+          path: .buildozer
+          key: buildozer-cache-v1
+
       - name: Install system dependencies
         run: |
           sudo apt update
@@ -29,8 +41,8 @@ jobs:
           mkdir -p $HOME/android-sdk
           cd $HOME/android-sdk
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdtools.zip
-          unzip cmdtools.zip -d cmdline-tools
-          mv cmdline-tools/cmdline-tools cmdline-tools/latest
+          unzip -o cmdtools.zip -d cmdline-tools
+          mv -f cmdline-tools/cmdline-tools cmdline-tools/latest || true
           yes | cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3" "ndk;23.1.7779620"
 
       - name: Install Python dependencies
@@ -50,3 +62,4 @@ jobs:
         with:
           name: BRS-Launcher
           path: bin/*.apk
+
